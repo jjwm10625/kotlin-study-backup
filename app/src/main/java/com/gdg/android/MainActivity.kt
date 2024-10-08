@@ -1,17 +1,11 @@
 package com.gdg.android
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -38,16 +32,16 @@ val hobbies = listOf(
 )
 
 class MainActivity : ComponentActivity() {
-    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             GDGAndroidTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) {
+                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     ProfileScreen(
                         name = "조영서",
                         major = "소프트웨어학부, 2학년", // 동적으로 전공 및 학년 전달
+                        modifier = Modifier.padding(innerPadding) // innerPadding 적용
                     )
                 }
             }
@@ -58,7 +52,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun ProfileScreen(name: String, major: String, modifier: Modifier = Modifier) {
     Column(
-        modifier = Modifier
+        modifier = modifier // innerPadding이 적용된 modifier 사용
             .fillMaxSize()
             .background(Color.White)
             .padding(16.dp),
@@ -80,7 +74,7 @@ fun ProfileScreen(name: String, major: String, modifier: Modifier = Modifier) {
         // 전공 텍스트
         Text(
             text = major,
-            modifier = modifier.padding(top = 20.dp),
+            modifier = Modifier.padding(top = 20.dp),
             fontSize = 14.sp,
             color = Color.Gray,
             textAlign = TextAlign.Center
@@ -89,7 +83,7 @@ fun ProfileScreen(name: String, major: String, modifier: Modifier = Modifier) {
         // 이름 텍스트
         Text(
             text = name,
-            modifier = modifier.padding(top = 5.dp),
+            modifier = Modifier.padding(top = 5.dp),
             fontSize = 25.sp,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center
@@ -98,7 +92,7 @@ fun ProfileScreen(name: String, major: String, modifier: Modifier = Modifier) {
         // 취미 제목 텍스트
         Text(
             text = "나의 취미",
-            modifier = modifier
+            modifier = Modifier
                 .padding(top = 25.dp)
                 .fillMaxWidth(),
             fontWeight = FontWeight.Bold,
@@ -107,7 +101,9 @@ fun ProfileScreen(name: String, major: String, modifier: Modifier = Modifier) {
 
         // 취미 리스트
         LazyColumn(
-            modifier = Modifier.fillMaxSize().padding(top = 10.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 10.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(hobbies) { hobby ->
@@ -131,6 +127,7 @@ fun ProfileScreen(name: String, major: String, modifier: Modifier = Modifier) {
 @Composable
 fun ProfilePreview() {
     GDGAndroidTheme {
-        ProfileScreen(name = "조영서", major = "소프트웨어학부, 2학년") // 미리보기에도 동적 값 사용
+        ProfileScreen(name = "조영서", major = "소프트웨어학부, 2학년")
     }
 }
+
